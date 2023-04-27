@@ -2,13 +2,16 @@ const fetch = require('node-fetch');
 const fs = require('fs')
 
 const START_PAGE = 0;
-const END_PAGE = 273;
+const END_PAGE = 299;
 
 async function getPageData(page) {
     const res = await fetch(`https://raider.io/api/mythic-plus/rankings/teams?region=world&season=season-sl-2&eventId=10059&page=${page}`)
     .then(response => response.json())
     .then(json => json.rankings.rankedTeams)
-    .catch(err => console.log('Request Failed', err));
+    .catch(err => {
+        getPageData(page);
+        console.log('Request Failed', err);
+    });
     return res;
 }
 
